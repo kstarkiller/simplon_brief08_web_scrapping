@@ -7,5 +7,11 @@ This project demonstrates web scraping using the Scrapy framework. It extracts b
 To run this project, you need to have Scrapy installed. You can install it using the following command:
 
 ```
+pip install scrapy
+```
+
+To run it use the following command:
+
+```
 scrapy crawl myspider -o output.json
 ```
