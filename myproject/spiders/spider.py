@@ -15,25 +15,8 @@ class MySpider(scrapy.Spider):
     def parse(self, response):
         # Extracting data from each book on the current page
         for book in response.css('li.col-xs-6.col-sm-4.col-md-3.col-lg-3'):
-            # Capture the class attribute of the rating element
-            rating_class = book.css('p.star-rating::attr(class)').get()
-            # Split the class attribute by spaces and get the second item which should be the rating word
-            rating = rating_class.split()[1] if rating_class else None
-            
-            image_url = book.css('div.image_container a img::attr(src)').get()
-            image_name = os.path.basename(image_url) if image_url else None
-
-            book_data = {
-                'title': book.css('h3 a::attr(title)').get(),
-                'image_names': [image_name],
-                'rating': rating,
-                'price': book.css('p.price_color::text').get(),
-            }
-
             detail_page_url = response.urljoin(book.css('h3 a::attr(href)').get())
             request = scrapy.Request(detail_page_url, callback=self.parse_book_details)
-            request.meta['book_data'] = book_data
-            self.collection.insert_one(request.meta['book_data'])
             yield request
 
         # Handling pagination
@@ -43,26 +26,35 @@ class MySpider(scrapy.Spider):
             yield scrapy.Request(next_page_url, callback=self.parse)
 
     def parse_book_details(self, response):
-        book_data = response.meta['book_data'] 
+        # Capture the class attribute of the rating element
+        rating_class = response.css('p.star-rating::attr(class)').get()
+        # Split the class attribute by spaces and get the second item which should be the rating word
+        rating = rating_class.split()[1] if rating_class else None
+        
+        # Extracting image url and image name
+        image_url = response.css('div.image_container a img::attr(src)').get()
+        image_name = os.path.basename(image_url) if image_url else None
 
         # Extracting category
         category = response.css('ul.breadcrumb li:nth-last-child(2) a::text').get()
-        book_data['category'] = category
 
         # Extracting description
         description = response.css('article.product_page p:not([class])::text').get()
-        book_data['description'] = description
 
-        yield book_data
+        # Extracting UPC (book's ID)
+        upc = response.css('article.product_page td::text').get()
+
+        book_detail = {
+                'title': response.css('h3 a::attr(title)').get(),
+                'image_names': [image_name],
+                'rating': rating,
+                'price': response.css('p.price_color::text').get(),
+                'category': category,
+                'description': description,
+                'upc': upc
+            }
+        
+        self.collection.insert_one(book_detail)
+
+        return
     
-    # def store_in_mongodb(self, book_data):
-    #     # Connexion à la base de données MongoDB
-    #     client = MongoClient('localhost:27017')
-    #     db = client['books']
-    #     collection = db['book']
-
-    #     # Insérer les données dans la collection
-    #     collection.insert_one(self.request.meta['book-data'])
-
-    #     # Afficher les résultats
-    #     self.log(f"Storing in MongoDB - {book_data}")
