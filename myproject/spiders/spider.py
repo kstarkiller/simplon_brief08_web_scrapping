@@ -1,6 +1,7 @@
 import scrapy
 import os
 from pymongo import MongoClient
+#from ....hidden import *
 
 class MySpider(scrapy.Spider):
     name = 'myspider'
@@ -11,6 +12,7 @@ class MySpider(scrapy.Spider):
                          password='mongodb')
     db = client['scraped_books']
     collection = db['books']
+    collection.drop()  # Drop the existing collection
 
     def parse(self, response):
         # Extracting data from each book on the current page
@@ -54,7 +56,7 @@ class MySpider(scrapy.Spider):
                 'upc': upc
             }
         
-        self.collection.insert_one(book_detail)
+        self.collection.insert_one(book_detail) # Write book's detail on colection
 
         return
     
