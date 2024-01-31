@@ -152,7 +152,6 @@ li {
   ::-webkit-scrollbar-track {
     border-radius: 10px;
     border: solid 1px #3c4043;
-    margin-top: 10px;
   }
    
   /* Handle */
@@ -165,3 +164,16 @@ li {
   ::-webkit-scrollbar-thumb:hover {
     background: #303134; 
   }
+
+
+  ._dash-loading{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    font-size: larger;
+}
+
