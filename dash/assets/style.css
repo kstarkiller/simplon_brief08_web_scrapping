@@ -140,6 +140,7 @@ li {
   height: 50vh;
   overflow: scroll;
   overflow-x: hidden;
+  margin-top: 10px;
 }
 
 
