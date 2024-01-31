@@ -118,6 +118,10 @@ li {
 .search-results {
   flex: 1;
   margin-right: 20px;
+  margin-top: 10px;
+  height: 50vh;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 .book-details {
@@ -131,7 +135,32 @@ li {
 .book-details {
   color: white;
   border: solid 1px #3c4043;
-  margin-top: 10px;
   border-radius: 10px;
   padding: 10px;
+  height: 50vh;
+  overflow: scroll;
+  overflow-x: hidden;
 }
+
+
+::-webkit-scrollbar {
+    width: 20px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    border: solid 1px #3c4043;
+    margin-top: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #303134; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #303134; 
+  }
