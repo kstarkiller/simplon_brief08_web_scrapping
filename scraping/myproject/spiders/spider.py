@@ -49,7 +49,7 @@ class MySpider(scrapy.Spider):
         upc = response.css('article.product_page td::text').get()
 
         book_detail = {
-                'title': response.css('h3 a::attr(title)').get(),
+                'title': response.css('article.product_page h1::text').get(),
                 'image_names': [image_name],
                 'rating': rating,
                 'price': response.css('p.price_color::text').get(),
