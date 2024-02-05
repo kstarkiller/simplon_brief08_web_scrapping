@@ -8,8 +8,8 @@ class MySpider(scrapy.Spider):
     start_urls = ['https://books.toscrape.com/catalogue/page-1.html']
 
     client = MongoClient('localhost:27017',
-                         username='Adminkevin',
-                         password='mongodb')
+                         username='loke',
+                         password='loke')
     db = client['scraped_books']
     collection = db['books']
     collection.drop()  # Drop the existing collection
