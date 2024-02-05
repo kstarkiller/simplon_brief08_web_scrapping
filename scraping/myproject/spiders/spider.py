@@ -1,9 +1,10 @@
 import scrapy
 import sys
 sys.path.append('../../..')
+from hidden import *
 import os
 from pymongo import MongoClient
-from hidden import *
+
 
 class MySpider(scrapy.Spider):
     name = 'myspider'

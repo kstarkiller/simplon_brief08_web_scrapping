@@ -1,7 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
 * {
   font-family: Oswald;
+}
+
+.checked {
+  color: orange;
 }
 
 body {
@@ -96,10 +101,20 @@ li {
   list-style-type:square;
 }
 
-.plot {
+.categoriesCountPlot,.booksRatePlot,.categoriesRatePlot{
   margin-top: 20px;
   border: solid 1px #3c4043;
   border-radius: 10px;
+}
+
+.categoriesCountPlot {
+  width: 100%;
+}
+.booksRatePlot {
+  width: 35%;
+}
+.categoriesRatePlot{
+  width: 65%;
 }
 
 .container {
@@ -108,11 +123,18 @@ li {
   width: 100%;
 }
 
+.hidden {
+  display: none;
+  height: 0px;
+}
+
 .resultsContainer {
   display: flex;
   flex-direction: row;
+  height: 500px;
   justify-content: space-between;
   margin-bottom: 20px;
+  transition: height 1s;
 }
 
 .search-results {
