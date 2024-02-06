@@ -61,11 +61,11 @@ To crawling books.toscrape.com website every day (monday to friday) automaticall
     1       15      spider       [1-5] "~/home/kevin/simplon/briefs/b08_web_scraping/repo/scraping/myproject/spiders/spider.py"
     
 What means this line ?
-1: Specifies that the command should be executed every day.
-15: Represents the delay in minutes.
-spider: Is the identifier for the job.
-[1-5]: This specifies the range of days from Monday (1) to Friday (5). So, the command will only be executed on days 1 through 5 (Monday to Friday).
-/chemin/vers/votre/programme: Is the path to the program or script that will be executed.
+- 1: Specifies that the command should be executed every day.
+- 15: Represents the delay in minutes.
+- spider: Is the identifier for the job.
+- [1-5]: This specifies the range of days from Monday (1) to Friday (5). So, the command will only be executed on days 1 through 5 (Monday to Friday).
+- /path/to/your/file: Is the path to the program or script that will be executed.
 
 ## Project Structure
     simplon_brief08_web_scraping/
