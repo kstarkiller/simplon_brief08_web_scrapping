@@ -64,6 +64,7 @@ input:focus {
   background-color: transparent !important;
 }
 
+
 .search-button {
   display: flex;
   justify-content: center;
@@ -73,13 +74,20 @@ input:focus {
 .search-button img {
   filter: invert(1);
   transition: 1s;
-  padding: 20px;
   position: absolute;
   float: right;
 }
 
 .search-button img:hover {
   filter: invert(0.5);
+}
+
+#language-dropdown {
+  margin-left: 10px;
+  width:250px;
+  background-color: transparent;
+  border: solid 1px #3c4043;
+  border-radius: 10px;
 }
 
 :any-link {
