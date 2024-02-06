@@ -88,6 +88,8 @@ spider: Is the identifier for the job.
     │   │   └── style.css
     │   ├── main.py
     │   └── requirements.txt
+    ├── api/
+    │   └── traduction_api.py
     ├── .gitignore
     └── README.md
 
