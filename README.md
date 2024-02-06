@@ -57,9 +57,9 @@ Visit http://localhost:8050/ in your web browser to interact with the dashboard.
 ### Anacron
 ### Automatic execution
 To crawling books.toscrape.com website every day (monday to friday) automatically go the ~/etc/anacrontab and write this line and the end of the file :
-    ```bash
+
     1       15      spider       [1-5] "~/home/kevin/simplon/briefs/b08_web_scraping/repo/scraping/myproject/spiders/spider.py"
-    ```
+    
 What means this line ?
 1: Specifies that the command should be executed every day.
 15: Represents the delay in minutes.
