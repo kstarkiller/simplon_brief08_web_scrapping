@@ -8,16 +8,7 @@ from bson.objectid import ObjectId
 import sys
 sys.path.append('../../')
 from hidden import *
-import logging
-
-logging.basicConfig(
-    level=logging.DEBUG,  # Set to DEBUG level for debug mode
-    format='%(asctime)s [%(levelname)s] - %(message)s',
-    handlers=[
-        logging.StreamHandler()
-    ]
-)
-
+import requests
 
 # Connect to MongoDB
 client = pymongo.MongoClient("mongodb://"+MONGO_USR+":"+MONGO_PWD+"@localhost:27017/")
@@ -37,6 +28,23 @@ app.layout = html.Div(className="container", children=[
             html.Button(id='search-button', className="search-button", children=[
                 html.Img(src="assets/icons/search_icon.svg", className="button-image")
             ]),
+            ]),
+            html.Div(className='langua', children=[
+            dcc.Dropdown(id='language-dropdown', options=[
+                    {'label': 'English', 'value': 'en'},
+                    {'label': 'French', 'value': 'fr'},
+                    {'label': 'Spanish', 'value': 'es'},
+                    {'label': 'German', 'value': 'de'},
+                    {'label': 'Italian', 'value': 'it'},
+                    {'label': 'Portuguese', 'value': 'pt'},
+                    {'label': 'Dutch', 'value': 'nl'},
+                    {'label': 'Russian', 'value': 'ru'},
+                    {'label': 'Japanese', 'value': 'ja'},
+                    {'label': 'Chinese', 'value': 'zh'},
+                    {'label': 'Korean', 'value': 'ko'},
+                    {'label': 'Turkish', 'value': 'tr'},
+                    {'label': 'Arabic', 'value': 'ar'},
+                ], placeholder="Select a language for translation")
         ]),
     ]),
     
@@ -44,7 +52,8 @@ app.layout = html.Div(className="container", children=[
         html.Div(className='search-results', children=[
             html.Div(id='search-output'),
         ]),
-        html.Div(id='book-details', className='book-details')
+        html.Div(id='book-details', className='book-details', children=[
+        ]),
     ]),
     
     html.Div(className="categoriesCountPlot", children=[
@@ -53,7 +62,7 @@ app.layout = html.Div(className="container", children=[
 
     html.Div(className="booksRatePlot", children=[
         dcc.Graph(id='booksrate-plot')
-    ])
+    ]),
 ])
 
 @app.callback(
@@ -68,12 +77,12 @@ def update_class(n_clicks, n_submit):
 
 @app.callback(
     Output('search-output', 'children'),
-    [Input('search-button', 'n_clicks'), Input('search-input', 'n_submit')],
+    [Input('search-button', 'n_clicks'), Input('search-input', 'n_submit'), Input('language-dropdown', 'value')],
     [State('search-input', 'value')],
 )
-def update_output_onClick(n_clicks, n_submit, value):
+def update_output_onClick(n_clicks, n_submit, language_value, search_value):
     if n_clicks or n_submit :
-        results = list(db.books.find({"title": {"$regex": value, "$options": "i"}}))
+        results = list(db.books.find({"title": {"$regex": search_value, "$options": "i"}}))
         results = [{**doc, '_id': str(doc['_id'])} for doc in results]
         results_count = len(results)
         if results_count > 0:
@@ -89,12 +98,13 @@ def update_output_onClick(n_clicks, n_submit, value):
     else:
         return "Please enter a book title"
 
+
 @app.callback(
     Output('book-details', 'children'),
-    [Input({'type': 'book-item', 'index': ALL}, 'n_clicks')],
-    [State({'type': 'book-item', 'index': ALL}, 'id')]
+    Input({'type': 'book-item', 'index': ALL}, 'n_clicks'),
+    [State({'type': 'book-item', 'index': ALL}, 'id'), State('language-dropdown', 'value')],
 )
-def display_book_details(n_clicks, ids):
+def display_book_details(n_clicks, ids, value):
     ctx = dash.callback_context
     if not ctx.triggered:
         return
@@ -102,6 +112,11 @@ def display_book_details(n_clicks, ids):
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
     book_id = eval(button_id)['index']
     book = db.books.find_one({"_id": ObjectId(book_id)})
+    description = book['description']
+
+    description_translated = requests.get(f'http://127.0.0.1:5000/translate/?text={description}&source_lang=auto&target_lang={value}')
+    description_translated = description_translated.json()['translated_text']
+
 
     if book:
         match book['rating']:
@@ -116,7 +131,7 @@ def display_book_details(n_clicks, ids):
                     html.Span(className="fa fa-star"),
                     html.P(f"Price: {book['price']}"),
                     html.P(f"Category: {book['category']}"),
-                    html.P(f"Description: {book['description']}"),
+                    html.P(description_translated),
                     html.P(f"UPC: {book['upc']}")
                 ])
             case 'Two':
@@ -130,7 +145,7 @@ def display_book_details(n_clicks, ids):
                     html.Span(className="fa fa-star"),
                     html.P(f"Price: {book['price']}"),
                     html.P(f"Category: {book['category']}"),
-                    html.P(f"Description: {book['description']}"),
+                    html.P(description_translated),
                     html.P(f"UPC: {book['upc']}")
                 ])
             case 'Three':
@@ -144,7 +159,7 @@ def display_book_details(n_clicks, ids):
                     html.Span(className="fa fa-star"),
                     html.P(f"Price: {book['price']}"),
                     html.P(f"Category: {book['category']}"),
-                    html.P(f"Description: {book['description']}"),
+                    html.P(description_translated),
                     html.P(f"UPC: {book['upc']}")
                 ])
             case 'Four':
@@ -158,7 +173,7 @@ def display_book_details(n_clicks, ids):
                     html.Span(className="fa fa-star"),
                     html.P(f"Price: {book['price']}"),
                     html.P(f"Category: {book['category']}"),
-                    html.P(f"Description: {book['description']}"),
+                    html.P(description_translated),
                     html.P(f"UPC: {book['upc']}")
                 ])
             case 'Five':
@@ -172,7 +187,7 @@ def display_book_details(n_clicks, ids):
                     html.Span(className="fa fa-star checked"),
                     html.P(f"Price: {book['price']}"),
                     html.P(f"Category: {book['category']}"),
-                    html.P(f"Description: {book['description']}"),
+                    html.P(description_translated),
                     html.P(f"UPC: {book['upc']}")
                 ])
             case _:
@@ -181,11 +196,12 @@ def display_book_details(n_clicks, ids):
                     html.Span(f"Rating : No rating yet for this book"),
                     html.P(f"Price: {book['price']}"),
                     html.P(f"Category: {book['category']}"),
-                    html.P(f"Description: {book['description']}"),
+                    html.P(description_translated),
                     html.P(f"UPC: {book['upc']}")
                 ])
     else:
         return "Book details not found."
+    
 
 @app.callback(
     Output('categoriescount-plot', 'figure'),
