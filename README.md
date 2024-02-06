@@ -36,7 +36,7 @@ This project is a Python-based web scraping and data visualization project using
 To scrape data from books.toscrape.com, you first have to install MongoDB and create your user (if not already done): without this step you won't be able to run scraping process.
 [See instructions to install MongoDB and create an user below](#MongoDB)
 
-In spider.py replace MONGO_USR and MONGO_PWD variables by your MongoDB username and password (see lines 14 and 15 of the spider.py file)
+In spider.py and main.py, replace MONGO_USR and MONGO_PWD variables by your MongoDB username and password (see lines 14 and 15 of the spider.py file and line 23 of the main.py)
 
 Then you can run the following command:
     ```bash
@@ -70,7 +70,7 @@ Visit http://localhost:8050/ in your web browser to interact with the dashboard.
     │   ├── assets
     │   │   ├── icons/
     │   │   │   ├── logo.svg
-    │   │   │   └── search!icon.svg
+    │   │   │   └── search_icon.svg
     │   │   └── style.css
     │   ├── main.py
     │   └── requirements.txt
