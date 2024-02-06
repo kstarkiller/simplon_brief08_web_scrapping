@@ -11,6 +11,7 @@ This project is a Python-based web scraping and data visualization project using
 - [Project Structure](#project-structure)
 - [Scraping](#scraping)
 - [Dashboard](#dashboard)
+- [Automatic execution with anacron](#anacron)
 - [Contributing](#contributing)
 
 ## Installation
@@ -52,6 +53,19 @@ To launch the dashboard, run the following command:
     ```
 
 Visit http://localhost:8050/ in your web browser to interact with the dashboard. You can search for books and visualize some data points.
+
+### Anacron
+### Automatic execution
+To crawling books.toscrape.com website every day (monday to friday) automatically go the ~/etc/anacrontab and write this line and the end of the file :
+    ```bash
+    1       15      spider       [1-5] "~/home/kevin/simplon/briefs/b08_web_scraping/repo/scraping/myproject/spiders/spider.py"
+    ```
+What means this line ?
+1: Specifies that the command should be executed every day.
+15: Represents the delay in minutes.
+spider: Is the identifier for the job.
+[1-5]: This specifies the range of days from Monday (1) to Friday (5). So, the command will only be executed on days 1 through 5 (Monday to Friday).
+/chemin/vers/votre/programme: Is the path to the program or script that will be executed.
 
 ## Project Structure
     simplon_brief08_web_scraping/
