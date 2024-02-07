@@ -40,17 +40,13 @@ To scrape data from books.toscrape.com, you first have to install MongoDB and cr
 In spider.py and main.py, replace MONGO_USR and MONGO_PWD variables by your MongoDB username and password (see lines 14 and 15 of the spider.py file and line 23 of the main.py)
 
 Then you can run the following command:
-    ```bash
     scrapy crawl myspider
-    ```
 
 This command will initiate the scraping process and save the scraped data in 'books' collection of 'scraped_books' database.
 
 ### Dashboard
 To launch the dashboard, run the following command:
-    ```bash
     python dash/main.py
-    ```
 
 Visit http://localhost:8050/ in your web browser to interact with the dashboard. You can search for books and visualize some data points.
 
